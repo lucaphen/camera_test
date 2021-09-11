@@ -72,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
               )
             ),
             Text(
-              'Choose an image',
+              'You have pushed the button this many times:',
             ),
           ],
         ),
@@ -82,7 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
           await getImageFromGallery();
         },
         tooltip: 'Increment',
-        child: Icon(Icons.camera_alt),
+        child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
