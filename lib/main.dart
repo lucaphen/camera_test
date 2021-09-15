@@ -32,33 +32,16 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  // new picture selector
-  // image;
   final picker = ImagePicker();
+  File? imagePath;
 
-  Future getImageFromGallery() async {
+  Future _getImageFromGallery() async {
     try {
-      var image = await ImagePicker().getImage(source: ImageSource.gallery);
-
-      if (image == null) {
-        print('image is null');
-        return;
-      }
-
-      //XFile? imageTemporary = XFile(image!.path);
-      //setState(() => this.image = imageTemporary);
-
-      print("Image path is: ${image.path}");
-      return;
-    } on PlatformException catch (e) {
-      print('Failed to pick image $e');
-    }
-  }
-
-  void _incrementCounter() async {
-    try {
-      var pickedFile = await picker.getImage(source: ImageSource.gallery);
-      print('pickedFile: $pickedFile');
+      var pickedFile = await picker.pickImage(source: ImageSource.gallery);
+      print('pickedFile: ${pickedFile!.path}');
+      setState(() {
+        imagePath = File(pickedFile.path);
+      });
     } catch (error) {
       print('error: $error');
     }
@@ -74,16 +57,16 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            // Center(
-            //     child: (image != null)
-            //         ? Image.file(File(image!.path))
-            //         : Container(
-            //             height: 150,
-            //             width: 150,
-            //             child: Icon(
-            //               Icons.camera,
-            //               size: 40,
-            //             ))),
+            Center(
+                child: (imagePath!= null)
+                    ? Image.file(imagePath!)
+                    : Container(
+                        height: 150,
+                        width: 150,
+                        child: Icon(
+                          Icons.camera,
+                          size: 40,
+                        ))),
             Text(
               'You have pushed the button this many times:',
             ),
@@ -92,13 +75,13 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          _incrementCounter();
+          await _getImageFromGallery();
           //await getImageFromGallery();
           //print('Image selected');
         },
         tooltip: 'Increment',
         child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 }
